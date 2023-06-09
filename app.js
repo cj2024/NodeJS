@@ -1,10 +1,18 @@
-const http = require("http");
+const express = require("express");
+const port = 3000;
 
-const server = http.createServer((req, res) => {
-  console.log("Chinmay Joshi");
-  res.end("Chinmay Joshi"); // Used to send a response back to the browser
+const app = express();
+
+app.use((req, res, next) => {
+  console.log("In the middleware");
+  next();
 });
 
-server.listen(4000, () => {
-  console.log("Server is running on port 4000");
+app.use((req, res, next) => {
+  console.log("In another middleware");
+  res.send("<h1> Hello from Express</h1>");
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on ${port}`);
 });
