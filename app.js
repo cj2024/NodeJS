@@ -1,10 +1,28 @@
-const http = require("http");
+const path = require("path");
+const express = require("express");
+const port = 3000;
+const bodyParser = require("body-parser");
 
-const server = http.createServer((req, res) => {
-  console.log("Chinmay Joshi");
-  res.end("Chinmay Joshi"); // Used to send a response back to the browser
+const app = express();
+
+const adminRoute = require("./routes/admin");
+const shopRoute = require("./routes/shop");
+const contactRoute = require("./routes/contact");
+const successRoute = require("./routes/success");
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use("/admin", adminRoute);
+app.use(shopRoute);
+app.use(contactRoute);
+app.use(successRoute);
+
+app.use((req, res, next) => {
+  res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
 });
 
-server.listen(4000, () => {
-  console.log("Server is running on port 4000");
+app.listen(port, () => {
+  console.log(`Server is running on ${port}`);
 });
+
